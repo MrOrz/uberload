@@ -13,7 +13,7 @@ Example
 
 ### app.jsx
 
-```
+```js
 App = React.createClass({
   displayName: 'App',
 
@@ -73,7 +73,7 @@ Content = React.createClass({
 
 ### index.js
 
-```
+```js
 var React = require('react'),
     App = require('./app.jsx').App,
     uberload = require('./uberload');
@@ -105,7 +105,7 @@ uberload({
 
 ### Execution result of index.js
 
-```
+```bash
 $ babel-node index.js
 => App uberloaded: <main><div>Content id=1</div><div>Content id=2</div><div>Content id=3</div></main>
 ```
