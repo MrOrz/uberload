@@ -24,9 +24,9 @@ App = React.createClass({
     var contents = contentStore.map((contentId) => <Content id={contentId} key={contentId}/>)
 
     return (
-      <div>
+      <main>
         {contents}
-      </div>
+      </main>
     )
   }
 });
