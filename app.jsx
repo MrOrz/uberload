@@ -37,7 +37,7 @@ Content = React.createClass({
   statics: {
     load (param) {
       var props = param.props;
-      // Assume we fetch and populates contentStore with data from server...
+      // Assume we fetch and populates itemStore with data from server...
       //
       return new Promise((resolve) => {
         itemStore[props.id] = {

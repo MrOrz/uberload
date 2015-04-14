@@ -46,7 +46,7 @@ Content = React.createClass({
   statics: {
     load (param) {
       var props = param.props;
-      // Assume we fetch and populates contentStore with data from server...
+      // Assume we fetch and populates itemStore with data from server...
       //
       return new Promise((resolve) => {
         itemStore[props.id] = {
@@ -74,24 +74,6 @@ Content = React.createClass({
 ### index.js
 
 ```js
-var React = require('react'),
-    App = require('./app.jsx').App,
-    uberload = require('./uberload');
-
-// Catch all unhandled promise rejections and print error.
-// Ref: https://iojs.org/api/process.html#process_event_unhandledrejection
-//
-process.on('unhandledRejection', function(reason, promise) {
-  if (reason.stack) {
-    // Error object, has stack info
-    console.error('[Unhandled Rejection]', reason.stack);
-  } else {
-    console.error('[Unhandled Rejection] Reason:', reason);
-  }
-  console.error('[Unhandled Rejection] Promise:', promise);
-});
-
-
 var app = React.createElement(App);
 
 uberload({
