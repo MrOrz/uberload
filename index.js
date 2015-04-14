@@ -15,12 +15,11 @@ process.on('unhandledRejection', function(reason, promise) {
   console.error('[Unhandled Rejection] Promise:', promise);
 });
 
-
 var app = React.createElement(App);
 
 uberload({
   React,
-  rootComponent: app,
+  rootElement: app,
   fnName: 'load'
 }).then(() => {
   console.log('App uberloaded:', React.renderToStaticMarkup(app));

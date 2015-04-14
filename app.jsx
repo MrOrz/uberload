@@ -1,4 +1,5 @@
 var React = require('react'),
+    debug = require('debug')('uberload:exampleApp'),
 
     contentStore = [],
     itemStore = {},
@@ -8,20 +9,20 @@ var React = require('react'),
 App = React.createClass({
   displayName: 'App',
 
-  statics: {
-    load (param) {
-      // Assume we fetch and populates contentStore with data from server...
-      //
-      return new Promise((resolve) => {
-        contentStore.push('1','2','3');
-
-        resolve();
-      });
-    }
+  load() {
+    // Assume we fetch and populates contentStore with data from server...
+    //
+    return new Promise((resolve) => {
+      contentStore.push('1', '2', '3');
+      debug('Loading app');
+      resolve();
+    });
   },
 
   render() {
-    var contents = contentStore.map((contentId) => <Content id={contentId} key={contentId}/>)
+    var contents = contentStore.map((contentId) =>
+      <Content id={contentId} key={contentId}/>
+    )
 
     return (
       <main>
@@ -34,19 +35,16 @@ App = React.createClass({
 Content = React.createClass({
   displayName: 'Content',
 
-  statics: {
-    load (param) {
-      var props = param.props;
-      // Assume we fetch and populates itemStore with data from server...
-      //
-      return new Promise((resolve) => {
-        itemStore[props.id] = {
-          name: `Content id=${props.id}`
-        };
-
-        resolve();
-      });
-    }
+  load() {
+    // Assume we fetch and populates itemStore with data from server...
+    //
+    return new Promise((resolve) => {
+      itemStore[this.props.id] = {
+        name: `Content id=${this.props.id}`
+      };
+      debug('Loading content', this.props);
+      resolve();
+    });
   },
 
   render() {

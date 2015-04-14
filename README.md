@@ -1,11 +1,11 @@
 uberload
 ========
 
-1. For each React component, set a static "loader" function that returns a promise, which is resolved when the component's data is loaded.
+1. For each React component, define a data-fetching method that returns a promise, which is resolved when the component's data is loaded.
 
-2. Invoke `uberload` with the root component and name of that loader function.
+2. Invoke `uberload` with the root component and name of that data-fetching method.
 
-3. `uberload` tries to render and invoke the loader function of all rendered components until all loader functions are invoked.
+3. `uberload` tries to render and invoke the date-fetching method of all rendered components until all data-fetching methods are invoked.
 
 
 Example
@@ -17,20 +17,20 @@ Example
 App = React.createClass({
   displayName: 'App',
 
-  statics: {
-    load (param) {
-      // Assume we fetch and populates contentStore with data from server...
-      //
-      return new Promise((resolve) => {
-        contentStore.push('1','2','3');
-
-        resolve();
-      });
-    }
+  load() {
+    // Assume we fetch and populates contentStore with data from server...
+    //
+    return new Promise((resolve) => {
+      contentStore.push('1', '2', '3');
+      debug('Loading app');
+      resolve();
+    });
   },
 
   render() {
-    var contents = contentStore.map((contentId) => <Content id={contentId} key={contentId}/>)
+    var contents = contentStore.map((contentId) =>
+      <Content id={contentId} key={contentId}/>
+    )
 
     return (
       <main>
@@ -43,19 +43,16 @@ App = React.createClass({
 Content = React.createClass({
   displayName: 'Content',
 
-  statics: {
-    load (param) {
-      var props = param.props;
-      // Assume we fetch and populates itemStore with data from server...
-      //
-      return new Promise((resolve) => {
-        itemStore[props.id] = {
-          name: `Content id=${props.id}`
-        };
-
-        resolve();
-      });
-    }
+  load() {
+    // Assume we fetch and populates itemStore with data from server...
+    //
+    return new Promise((resolve) => {
+      itemStore[this.props.id] = {
+        name: `Content id=${this.props.id}`
+      };
+      debug('Loading content', this.props);
+      resolve();
+    });
   },
 
   render() {
@@ -78,7 +75,7 @@ var app = React.createElement(App);
 
 uberload({
   React,
-  rootComponent: app,
+  rootElement: app,
   fnName: 'load'
 }).then(() => {
   console.log('App uberloaded:', React.renderToStaticMarkup(app));
@@ -91,3 +88,11 @@ uberload({
 $ babel-node index.js
 => App uberloaded: <main><div>Content id=1</div><div>Content id=2</div><div>Content id=3</div></main>
 ```
+
+
+Where do the ideas come from
+----------------------------
+
+* Overriding `React.createElement`: [react-router](https://github.com/rackt/react-router/)
+* Instantiating `ReactComponent` by ourself: [react-vdom](https://github.com/gcanti/react-vdom/) [(Not recommended by Facebook, though)](https://facebook.github.io/react/docs/glossary.html#react-components)
+
